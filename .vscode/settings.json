@@ -1,8 +1,0 @@
-{
-    "html-css-class-completion.includeGlobPattern": "**/*.css",
-    "html-css-class-completion.enable": true,
-    "html-css-class-completion.fileMaxSize": 500000,
-    "emmet.includeLanguages": {
-        "html": "html"
-    }
-}
