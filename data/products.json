@@ -1,0 +1,82 @@
+[
+  { 
+    "id": 0,
+    "image": "no image", 
+    "name": "Shoes Soccer Shade", 
+    "manufacturer": "Nike", 
+    "description": "Built for fast-paced soccer action, these cleats offer superb grip on firm ground. Lightweight synthetic materials and a textured upper provide responsive control for quick direction changes.",
+    "price": 299.99
+  },
+  { 
+    "id": 1,
+    "image": "no image", 
+    "name": "Shoes Soccer Fade", 
+    "manufacturer": "Nike", 
+    "description": "Engineered for precision and speed, these Nike soccer cleats deliver enhanced traction and a sleek design that fades from dark to light. Ideal for competitive matches on natural grass fields.",
+    "price": 349.99
+  },
+  { 
+    "id": 2,
+    "image": "no image", 
+    "name": "Shoes Aqua Pure", 
+    "manufacturer": "Adidas", 
+    "description": "Adidas Aqua Pure shoes are ideal for active lifestyles near water. Designed with quick-drying mesh and a flexible, water-resistant upper, they keep your feet dry and cool even during high-intensity workouts.",
+    "price": 599.99
+  },
+  { 
+    "id": 3,
+    "image": "no image", 
+    "name": "Shoes New Sport", 
+    "manufacturer": "Puma", 
+    "description": "Versatile and stylish, the New Sport shoes by Puma offer breathable comfort for daily training and casual wear. Their soft insole and padded collar provide all-day support with a sporty touch.",
+    "price": 149.99
+  },
+  { 
+    "id": 4,
+    "image": "no image", 
+    "name": "Shoes Campus 00s", 
+    "manufacturer": "Adidas", 
+    "description": "Inspired by the early 2000s, the Campus 00s bring retro vibes with a modern twist. Featuring a soft suede upper, rubber cupsole, and wide laces, they’re perfect for streetwear lovers and sneakerheads.",
+    "price": 367.83
+  },
+  { 
+    "id": 5,
+    "image": "no image", 
+    "name": "Shoes Handball Spezial", 
+    "manufacturer": "Adidas", 
+    "description": "These timeless sneakers were originally made for handball courts but have become a staple in everyday fashion. With a suede upper, T-toe overlay, and durable gum sole, they blend performance and style.",
+    "price": 479.00
+  },
+  { 
+    "id": 6,
+    "image": "no image", 
+    "name": "Shoes Samba OG", 
+    "manufacturer": "Adidas", 
+    "description": "A streetwear icon, the Samba OG offers a classic look with a leather upper, suede toe cap, and low-profile silhouette. Originally designed for indoor soccer, now reimagined for everyday wear.",
+    "price": 529.00
+  },
+  { 
+    "id": 7,
+    "image": "no image", 
+    "name": "Shoes BB550EF - white", 
+    "manufacturer": "New Balance", 
+    "description": "This white edition of the New Balance BB550 combines heritage basketball design with modern minimalism. Sturdy leather construction and vintage details make it ideal for both sport and lifestyle.",
+    "price": 449.99
+  },
+  { 
+    "id": 8,
+    "image": "no image", 
+    "name": "Shoes BB550VRC - beige", 
+    "manufacturer": "New Balance", 
+    "description": "Featuring a premium beige upper and retro silhouette, these BB550s are a nod to 80s basketball heritage. Durable, supportive, and easy to pair with casual outfits for an elevated everyday look.",
+    "price": 449.99
+  },
+  { 
+    "id": 9,
+    "image": "no image", 
+    "name": "Shoes Sunrise Kick", 
+    "manufacturer": "Nike", 
+    "description": "Add color to your step with Sunrise Kick by Nike. These bold sneakers feature vibrant orange gradients, breathable mesh, and lightweight construction-perfect for morning runs or daily commutes.",
+    "price": 811.55
+  }
+]
