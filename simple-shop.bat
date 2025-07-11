@@ -1,11 +1,10 @@
 @echo off
 title Start Simple-Shop
 
-set MINIWEB=server\miniweb.exe
+set MINIWEB=miniweb.exe
 set PORT=8080
-set ROOT=.
 
-start cmd /k "echo Starting MiniWeb Server... & echo [INFO] Close this cmd window to stop the server [INFO] & echo. & %MINIWEB% -p %PORT% -d %ROOT%"
+start cmd /k "echo Starting MiniWeb Server... & echo [INFO] Close this cmd window to stop the server [INFO] & %MINIWEB% -p %PORT%"
 
 timeout /t 1 > nul
 
