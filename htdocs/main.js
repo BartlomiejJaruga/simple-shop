@@ -1,3 +1,18 @@
+// TODO:
+// 1. Add page loading indicator
+
+import { loadProductsFromFile } from "./modules/shopUtils.js";
+import { 
+    recountCartTotalPrice, 
+    recountManufacturerTotalPrice, 
+    findManufacturerInCart, 
+    findProductInCart,
+    removeCartIsEmptyInformation,
+    checkIfCartEmpty
+} from "./modules/cartUtils.js";
+
+
+
 const DEFAULT_PRODUCT_QUANTITY = 1;
 const DEFAULT_MIN_PRODUCT_QUANTITY = 1;
 const DEFAULT_MAX_PRODUCT_QUANTITY = 99;
@@ -5,28 +20,16 @@ const DEFAULT_NEW_CART_PRODUCT_CHECKBOX_STATE = false;
 const DEFAULT_NEW_CART_MANUFACTURER_CHECKBOX_STATE = false;
 
 
-// --- SHOP ---
+
+// --- WHOLE STORE ---
 
 const generateStore = async (filepath) => {
     const productsData = await loadProductsFromFile(filepath);
     generateProductList(productsData);
-    checkIfCartEmpty();
+    checkIfCartEmpty(cart);
 }
 
-const loadProductsFromFile = async (filepath) => {
-    try {
-        const response = await fetch(filepath);
-        if(!response.ok){
-            throw new Error('Failed to load products from file :' + filepath);
-        }
-        const data = await response.json();
-        return data;
-    }
-    catch(error){
-        console.error('Error occured: ', error);
-        return null;
-    }
-}
+// --- SHOP ---
 
 const generateProductList = (productsData) => {
     const productList = document.getElementById("products_list");
@@ -105,7 +108,7 @@ const generateProductList = (productsData) => {
         productAddToCartButton.innerHTML = "<i class='fa-solid fa-cart-plus fa-2x'></i>";
         productAddToCartButton.addEventListener('click', () => {
             updateCart(product, parseInt(productQuantity.value));
-            recountManufacturerTotalPrice(product.manufacturer);
+            recountManufacturerTotalPrice(cart, product.manufacturer);
             removeCartIsEmptyInformation();
         });
 
@@ -125,36 +128,31 @@ const generateProductList = (productsData) => {
 
 // --- CART ---
 
-
 let manufacturerIdCounter = 0;
 const cart = [];
 
 
 const updateCart = (productData, quantity) => {
     console.log(cart);
-    const foundManufacturer = cart.filter(manufacturer => manufacturer.manufacturerName === productData.manufacturer); // consider .reduce instead of .filter
+    const foundManufacturer = cart.find(manufacturer => manufacturer.manufacturerName === productData.manufacturer);
 
-    if(foundManufacturer.length > 0){
-        const manufacturer = foundManufacturer[0]; // consider .reduce instead of .filter
-
-        const foundProduct = manufacturer.products.filter(item => item.product.id === productData.id); // consider .reduce instead of .filter
-        if(foundProduct.length > 0){
-            const product = foundProduct[0]; // consider .reduce instead of .filter
+    if(foundManufacturer){
+        const foundProduct = foundManufacturer.products.find(item => item.product.id === productData.id);
+        if(foundProduct){
+            const quantityToAdd = Math.min(parseInt(quantity), DEFAULT_MAX_PRODUCT_QUANTITY - parseInt(foundProduct.quantity));
+            foundProduct.quantity = parseInt(foundProduct.quantity) + quantityToAdd;
             
-            const quantityToAdd = Math.min(parseInt(quantity), DEFAULT_MAX_PRODUCT_QUANTITY - parseInt(product.quantity));
-            product.quantity = parseInt(product.quantity) + quantityToAdd;
-            
-            const spans = product.productRef.querySelectorAll(".product_info span");
+            const spans = foundProduct.productRef.querySelectorAll(".product_info span");
             const quantitySpan = spans[1];
-            quantitySpan.textContent = product.quantity;
+            quantitySpan.textContent = foundProduct.quantity;
         }
         else{
-            const manufacturerTile = document.getElementById(manufacturer.manufacturerId);
+            const manufacturerTile = document.getElementById(foundManufacturer.manufacturerId);
             const newProduct = generateNewCartProduct(productData, quantity);
 
             manufacturerTile.appendChild(newProduct);
             
-            manufacturer.products.push({
+            foundManufacturer.products.push({
                 product: productData,
                 quantity: quantity,
                 isChecked: DEFAULT_NEW_CART_PRODUCT_CHECKBOX_STATE,
@@ -184,69 +182,6 @@ const updateCart = (productData, quantity) => {
     }
 }
 
-const findManufacturerInCart = (manufacturerName) => {
-    return cart.reduce((acc, manufacturer) => {
-        if(manufacturer.manufacturerName === manufacturerName){
-            acc = manufacturer;
-            return acc;
-        }
-
-        return acc;
-    }, null);
-}
-
-const findProductInCart = (productData) => {
-    return cart.reduce((acc, manufacturer) => {
-        if(manufacturer.manufacturerName === productData.manufacturer){
-            manufacturer.products.forEach(product => {
-                if(product.product.id === productData.id){
-                    acc = product;
-                    return acc;
-                }
-            });
-        }
-
-        return acc;
-    }, null);
-}
-
-const recountCartTotalPrice = () => {
-    const totalPrice = cart.reduce((acc, manufacturer) => {
-        manufacturer.products.forEach(product => {
-            if(product.isChecked){
-                acc += product.quantity * parseFloat(product.product.price).toFixed(2);
-            }
-        });
-
-        return acc;
-    }, 0);
-
-    const cartTotalPriceContainer = document.getElementById('cart_total_price');
-    cartTotalPriceContainer.textContent = "Grand total: " + totalPrice.toFixed(2) + "$";
-}
-
-const recountManufacturerTotalPrice = (manufacturerName) => {
-    const foundManufacturer = findManufacturerInCart(manufacturerName);
-
-    if(foundManufacturer){
-        const totalPrice = foundManufacturer.products.reduce((acc, product) => {
-            if(product.isChecked){
-                acc += product.quantity * parseFloat(product.product.price).toFixed(2);
-            }
-
-            return acc;
-        }, 0);
-
-        const manufacturerTotalPriceContainer = document.getElementById(foundManufacturer.manufacturerId).nextElementSibling;
-        manufacturerTotalPriceContainer.textContent = "Total: " + totalPrice.toFixed(2) + "$";
-
-        recountCartTotalPrice();
-    }
-    else {
-        console.log("[ERROR recountManufacturerTotalPrice] Failed to find manufacturer in cart object.");
-    }
-}
-
 const generateNewCartProduct = (productData, quantity) => {
     const cartProductContainer = document.createElement("div");
     cartProductContainer.className = "single_cart_product_container";
@@ -265,11 +200,11 @@ const generateNewCartProduct = (productData, quantity) => {
     productCheckbox.id = productCheckboxId;
     productCheckbox.checked = DEFAULT_NEW_CART_PRODUCT_CHECKBOX_STATE;
     productCheckbox.addEventListener('change', () => {
-        const foundProduct = findProductInCart(productData);
+        const foundProduct = findProductInCart(cart, productData);
         if(foundProduct){
             foundProduct.isChecked = !foundProduct.isChecked;
             
-            const foundManufacturer = findManufacturerInCart(productData.manufacturer);
+            const foundManufacturer = findManufacturerInCart(cart, productData.manufacturer);
             if(foundManufacturer){
                 let areAllProductsSelected = true;
                 foundManufacturer.products.forEach(product => {
@@ -290,7 +225,7 @@ const generateNewCartProduct = (productData, quantity) => {
                 console.log("[ERROR productCheckbox] Failed to find manufacturer in cart object.");
             }
 
-            recountManufacturerTotalPrice(productData.manufacturer);
+            recountManufacturerTotalPrice(cart, productData.manufacturer);
         }
         else{
             console.log("[ERROR productCheckbox] Failed to find product in cart object.");
@@ -324,7 +259,7 @@ const generateNewCartProduct = (productData, quantity) => {
             if (currentQuantity < DEFAULT_MAX_PRODUCT_QUANTITY){
                 productQuantity.textContent = currentQuantity + 1;
 
-                const foundProduct = findProductInCart(productData);
+                const foundProduct = findProductInCart(cart, productData);
                 if(foundProduct){
                     foundProduct.quantity = currentQuantity + 1;
                     console.log("Cart product quantity: ", foundProduct.quantity);
@@ -333,7 +268,7 @@ const generateNewCartProduct = (productData, quantity) => {
                     console.log("[ERROR: productIncreaseButton] Failed to increase product's quantity in cart variable");
                 }
 
-                recountManufacturerTotalPrice(productData.manufacturer);
+                recountManufacturerTotalPrice(cart, productData.manufacturer);
             }
         });
 
@@ -344,7 +279,7 @@ const generateNewCartProduct = (productData, quantity) => {
             if (currentQuantity > DEFAULT_MIN_PRODUCT_QUANTITY){
                 productQuantity.textContent = currentQuantity - 1;
 
-                const foundProduct = findProductInCart(productData);
+                const foundProduct = findProductInCart(cart, productData);
                 if(foundProduct){
                     foundProduct.quantity = currentQuantity - 1;
                     console.log("Cart product quantity: ", foundProduct.quantity);
@@ -353,7 +288,7 @@ const generateNewCartProduct = (productData, quantity) => {
                     console.log("[ERROR: productDecreaseButton] Failed to decrease product's quantity in cart variable");
                 }
 
-                recountManufacturerTotalPrice(productData.manufacturer);
+                recountManufacturerTotalPrice(cart, productData.manufacturer);
             }
         });
 
@@ -367,14 +302,14 @@ const generateNewCartProduct = (productData, quantity) => {
     productDeleteButton.className = "cart_product_delete_button";
     productDeleteButton.innerHTML = '<i class="fa-solid fa-trash-can fa-2x"></i>';
     productDeleteButton.addEventListener('click', () => {
-        const foundManufacturer = findManufacturerInCart(productData.manufacturer);
+        const foundManufacturer = findManufacturerInCart(cart, productData.manufacturer);
         if(foundManufacturer){
             const remainingProducts = foundManufacturer.products.filter(product => product.product.id !== productData.id);
             if(remainingProducts.length > 0){
                 cartProductContainer.remove();
                 foundManufacturer.products = remainingProducts;
 
-                recountManufacturerTotalPrice(productData.manufacturer);
+                recountManufacturerTotalPrice(cart, productData.manufacturer);
             }
             else{
                 cartProductContainer.closest('.cart_tile').remove();
@@ -390,9 +325,9 @@ const generateNewCartProduct = (productData, quantity) => {
                     console.log("[ERROR productDeleteButton] Failed to delete manufacturer from cart");
                 }
 
-                recountCartTotalPrice();
+                recountCartTotalPrice(cart);
 
-                checkIfCartEmpty();
+                checkIfCartEmpty(cart);
             }
         }
         else{
@@ -423,7 +358,7 @@ const generateNewCartManufacturer = (productData, quantity, newManufacturerId) =
     manufacturerCheckbox.id = manufacturerCheckboxId;
     manufacturerCheckbox.checked = DEFAULT_NEW_CART_MANUFACTURER_CHECKBOX_STATE;
     manufacturerCheckbox.addEventListener('change', () => {
-        const foundManufacturer = findManufacturerInCart(productData.manufacturer);
+        const foundManufacturer = findManufacturerInCart(cart, productData.manufacturer);
         if(foundManufacturer){
             foundManufacturer.isChecked = !foundManufacturer.isChecked;
 
@@ -436,7 +371,7 @@ const generateNewCartManufacturer = (productData, quantity, newManufacturerId) =
                 productCheckbox.firstChild.checked = foundManufacturer.isChecked;
             })
 
-            recountManufacturerTotalPrice(productData.manufacturer);
+            recountManufacturerTotalPrice(cart, productData.manufacturer);
         }
     });
 
@@ -462,43 +397,6 @@ const generateNewCartManufacturer = (productData, quantity, newManufacturerId) =
     return {newManufacturerTile: cartTile, newProduct: newProduct};
 }
 
-const checkIfCartEmpty = () => {
-    if(cart.length === 0){
-        const cartContainer = document.getElementById("cart_container");
-
-        if(cartContainer){
-            const cartIsEmptyInformationContainer = generateCartIsEmptyInformation();
-
-            cartContainer.appendChild(cartIsEmptyInformationContainer);
-        }
-        else{
-            console.log("[ERROR checkIfCartEmpty] Failed to found cart_container.");
-        }
-
-        return true;
-    }
-
-    return false;
-}
-
-const generateCartIsEmptyInformation = () => {
-    const cartIsEmptyInformationContainer = document.createElement("div");
-    cartIsEmptyInformationContainer.id = "cart_is_empty_information_container";
-
-    const cartIsEmptyHeader = document.createElement("h1");
-    cartIsEmptyHeader.innerHTML = "Your Cart is empty!<br> Add new products via Shop (left panel).";
-
-    cartIsEmptyInformationContainer.appendChild(cartIsEmptyHeader);
-
-    return cartIsEmptyInformationContainer;
-}
-
-const removeCartIsEmptyInformation = () => {
-    const cartIsEmptyInformationContainer = document.getElementById('cart_is_empty_information_container');
-    if(cartIsEmptyInformationContainer){
-        cartIsEmptyInformationContainer.remove();
-    }
-}
 
 
 // ===== GENERATING APP =====
