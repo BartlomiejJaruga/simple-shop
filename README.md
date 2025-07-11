@@ -56,18 +56,20 @@ A simple online store written in **pure JavaScript**. The UI consists of two pan
 ## 📂 Project Structure
 ```
 simple-shop/
-├── assets
-    └── item_image_example.png
-├── data
-    └── products.json
-├── styles
-    ├── _variables.css
-    ├── cart.css
-    ├── shop.css
-    └── styles.css
-├── index.html
-├── main.js
-└── README.md
+├── miniweb.exe
+├── simple-shop.bat    <-- launching app
+└── htdocs
+    ├── assets
+    |    └── item_image_example.png
+    ├── data
+    |    └── products.json
+    ├── styles
+    |    ├── _variables.css
+    |    ├── cart.css
+    |    ├── shop.css
+    |    └── styles.css
+    ├── index.html
+    └── main.js
 ```
 
 
@@ -75,13 +77,16 @@ simple-shop/
 
 ## 🚀 Installation Guide
 
-1. Clone the repozitory or download .zip file
-2. Open `index.html` in your browser (simply double-click it in file manager)
+1. Clone the repozitory or download .zip file (e.g. from latest release)
+2. Open `simple-shop.bat` (simply double-click it in file manager)
+3. App automatically starts on `http://localhost:8080/`
+4. To close the app just simply close CMD window
 
 ---
 
 ## 📌 Notes
 
 - This is a **front-end only** project (no backend)
-- No external libraries or frameworks were used
+- No frameworks were used
+- (**free for use**) MiniWeb HTTP server used for loading products from file ([server download link](https://sourceforge.net/projects/miniweb/), author: stanleyhuang)
 - (**free for use**) Font Awasome kit used for attaching icons
