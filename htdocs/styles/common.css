@@ -1,0 +1,37 @@
+/* THIS FILE CONTAINS CLASSES FOR RE-USABLE ELEMENTS USED ON PAGE */
+
+
+/* ===== LOADING INDICATOR ===== */
+
+.loading_indicator_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4em;
+}
+
+.loading_indicator {
+    width: 1.5em;
+    height: 1.5em;
+
+    border: 0.3em solid #b6b6b6;
+    border-top: 0.3em solid var(--color-accents);
+    border-radius: 50%;
+
+    font-size: inherit;
+
+    animation: loading_indicator_spin 1s linear infinite;
+}
+
+.loading_indicator p {
+    font-size: inherit;
+}
+
+@keyframes loading_indicator_spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

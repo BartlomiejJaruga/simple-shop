@@ -1,6 +1,3 @@
-// TODO:
-// 1. Add page loading indicator
-
 import { loadProductsFromFile } from "./modules/shopUtils.js";
 import { 
     recountCartTotalPrice, 
@@ -10,6 +7,7 @@ import {
     removeCartIsEmptyInformation,
     checkIfCartEmpty
 } from "./modules/cartUtils.js";
+import { LoadingIndicator } from "./modules/common.js";
 
 
 
@@ -24,9 +22,37 @@ const DEFAULT_NEW_CART_MANUFACTURER_CHECKBOX_STATE = false;
 // --- WHOLE STORE ---
 
 const generateStore = async (filepath) => {
-    const productsData = await loadProductsFromFile(filepath);
-    generateProductList(productsData);
+    const loadingIndicator = new LoadingIndicator();
+    const productsListLoadingIndicator = loadingIndicator.generateLoadingIndicator("Loading products...", "2rem");
+    const productsList = document.getElementById("products_list");
+    const aside = document.querySelector(".main_container aside");
+    if(productsList && aside){
+        productsList.style.display = "flex";
+        productsList.style.justifyContent = "center";
+        productsList.style.alignItems = "center";
+
+        aside.style.width = "30%";
+
+        productsList.appendChild(productsListLoadingIndicator);
+    }
+    else{
+        console.log("[ERROR generateStore] Failed to find products_list and append loadingIndicator");
+    }
+    
     checkIfCartEmpty(cart);
+    const productsData = await loadProductsFromFile(filepath);
+
+    if(productsList && aside){
+        loadingIndicator.removeLoadingIndicator();
+
+        aside.style.width = "70%";
+
+        productsList.style.removeProperty("justify-content");
+        productsList.style.removeProperty("align-items");
+        productsList.style.display = "grid";
+    }
+
+    generateProductList(productsData);
 }
 
 // --- SHOP ---
@@ -74,6 +100,7 @@ const generateProductList = (productsData) => {
         const productQuantity = document.createElement("input");
         productQuantity.className = "products_list_item_quantity_input";
         productQuantity.type = "number";
+        productQuantity.name = "productQuantity";
         productQuantity.value = DEFAULT_PRODUCT_QUANTITY;
         productQuantity.min = DEFAULT_MIN_PRODUCT_QUANTITY;
         productQuantity.max = DEFAULT_MAX_PRODUCT_QUANTITY;
