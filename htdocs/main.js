@@ -1,4 +1,9 @@
-import { loadProductsFromFile } from "./modules/shopUtils.js";
+import { 
+    loadProductsFromFile,
+    generateErrorWhileLoadingProductsInformation,
+    generateUnexpectedErrorWhileLoadingProductsInformation,
+    generateNoProductsInformation
+ } from "./modules/shopUtils.js";
 import { 
     recountCartTotalPrice, 
     recountManufacturerTotalPrice, 
@@ -41,18 +46,41 @@ const generateStore = async (filepath) => {
     
     checkIfCartEmpty(cart);
     const productsData = await loadProductsFromFile(filepath);
+    
+    loadingIndicator.removeLoadingIndicator();
 
-    if(productsList && aside){
-        loadingIndicator.removeLoadingIndicator();
-
-        aside.style.width = "70%";
-
-        productsList.style.removeProperty("justify-content");
-        productsList.style.removeProperty("align-items");
-        productsList.style.display = "grid";
+    if(productsData === null){
+        console.error("[ERROR] Failed to load products.");
+    
+        if(productsList){
+            productsList.appendChild(generateErrorWhileLoadingProductsInformation());
+        }
     }
+    else if(productsData?.length > 0){
+        if(productsList && aside){
+            aside.style.width = "70%";
 
-    generateProductList(productsData);
+            productsList.style.removeProperty("justify-content");
+            productsList.style.removeProperty("align-items");
+            productsList.style.display = "grid";
+        }
+
+        generateProductList(productsData);
+    }
+    else if(productsData?.length < 1){
+        console.error("[INFO] Products list is empty.");
+
+        if(productsList){
+            productsList.appendChild(generateNoProductsInformation());
+        }
+    }
+    else{
+        console.error("[ERROR] Something unexpected happened.");
+
+        if(productsList){
+            productsList.appendChild(generateUnexpectedErrorWhileLoadingProductsInformation());
+        }
+    }
 }
 
 // --- SHOP ---
