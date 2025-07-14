@@ -115,16 +115,30 @@ const generateProductList = (productsData) => {
 
         const productIncreaseButton = document.createElement("span");
         productIncreaseButton.textContent = "+";
+        productIncreaseButton.tabIndex = 0;
         productIncreaseButton.addEventListener("click", () => {
             let value = parseInt(productQuantity.value);
             if (value < DEFAULT_MAX_PRODUCT_QUANTITY) productQuantity.value = value + 1;
         });
+        productIncreaseButton.addEventListener('keydown', (e) => {
+            if(e.code === "Enter" || e.code === "Space"){
+                e.preventDefault();
+                productIncreaseButton.click();
+            }
+        });
 
         const productDecreaseButton = document.createElement("span");
         productDecreaseButton.textContent = "-";
+        productDecreaseButton.tabIndex = 0;
         productDecreaseButton.addEventListener("click", () => {
             let value = parseInt(productQuantity.value);
             if (value > DEFAULT_MIN_PRODUCT_QUANTITY) productQuantity.value = value - 1;
+        });
+        productDecreaseButton.addEventListener('keydown', (e) => {
+            if(e.code === "Enter" || e.code === "Space"){
+                e.preventDefault();
+                productDecreaseButton.click();
+            }
         });
 
         productQuantityControls.appendChild(productIncreaseButton);
@@ -281,6 +295,7 @@ const generateNewCartProduct = (productData, quantity) => {
 
     const productIncreaseButton = document.createElement("span");
         productIncreaseButton.textContent = "+";
+        productIncreaseButton.tabIndex = 0;
         productIncreaseButton.addEventListener("click", () => {
             let currentQuantity = parseInt(productQuantity.textContent);
             if (currentQuantity < DEFAULT_MAX_PRODUCT_QUANTITY){
@@ -298,9 +313,16 @@ const generateNewCartProduct = (productData, quantity) => {
                 recountManufacturerTotalPrice(cart, productData.manufacturer);
             }
         });
+        productIncreaseButton.addEventListener('keydown', (e) => {
+            if(e.code === "Enter" || e.code === "Space"){
+                e.preventDefault();
+                productIncreaseButton.click();
+            }
+        });
 
         const productDecreaseButton = document.createElement("span");
         productDecreaseButton.textContent = "-";
+        productDecreaseButton.tabIndex = 0;
         productDecreaseButton.addEventListener("click", () => {
             let currentQuantity = parseInt(productQuantity.textContent);
             if (currentQuantity > DEFAULT_MIN_PRODUCT_QUANTITY){
@@ -316,6 +338,12 @@ const generateNewCartProduct = (productData, quantity) => {
                 }
 
                 recountManufacturerTotalPrice(cart, productData.manufacturer);
+            }
+        });
+        productDecreaseButton.addEventListener('keydown', (e) => {
+            if(e.code === "Enter" || e.code === "Space"){
+                e.preventDefault();
+                productDecreaseButton.click();
             }
         });
 

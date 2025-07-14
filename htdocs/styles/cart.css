@@ -212,9 +212,13 @@ aside {
     flex-direction: column;
 }
 
-.cart_product_quantity_controls span {
+.cart_product_quantity_controls > span {
     height: 50%;
     padding: 0 0.5rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     cursor: pointer;
     
@@ -222,6 +226,13 @@ aside {
     text-align: center;
     user-select: none;
     color: white;
+}
+
+.cart_product_quantity_controls > span:nth-child(1):focus,
+.cart_product_quantity_controls > span:nth-child(2):focus {
+    background-color: var(--color-accents-contrast);
+    z-index: 9;
+    color: black;
 }
 
 .cart_product_quantity_controls > span:nth-child(1) {
