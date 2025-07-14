@@ -90,21 +90,6 @@ aside {
     padding: 1rem;
 }
 
-.manufacturer_checkbox {
-    display: flex;
-    gap: 0.25em;
-
-    width: 100%;
-    height: 1rem;
-
-    font-style: italic;
-}
-
-.manufacturer_checkbox > input,
-.manufacturer_checkbox > label {
-    cursor: pointer;
-}
-
 .single_cart_product_container {
     display: flex;
     gap: 1em;
@@ -130,17 +115,87 @@ aside {
     padding: 0.25rem 2.5% 0.25rem 2.5%;
 }
 
+/* --- Custom checkbox (product and manufacturer) --- */
+
+.manufacturer_checkbox {
+    display: flex;
+    gap: 0.25em;
+
+    width: 100%;
+    height: 1rem;
+
+    position: relative;
+
+    font-style: italic;
+}
+
 .product_checkbox {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 0.3em;
+
+    position: relative;
 }
 
+.manufacturer_checkbox > input,
+.manufacturer_checkbox > label,
 .product_checkbox > input,
 .product_checkbox > label {
     cursor: pointer;
 }
+
+.manufacturer_checkbox > input,
+.product_checkbox > input {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.manufacturer_checkbox > label,
+.product_checkbox > label {
+    display: flex;
+    align-items: center;
+}
+
+.manufacturer_checkbox > label::before,
+.product_checkbox > label::before {
+    content: "";
+    min-width: 1em;
+    min-height: 1em;
+    max-height: 1em;
+    border-radius: 0.25em;
+    margin-right: 0.3em;
+    border: 0.1em solid black;
+    font-size: inherit;
+    font-style: normal;
+}
+
+.manufacturer_checkbox > label:hover::before,
+.manufacturer_checkbox > input:hover + label::before,
+.product_checkbox > label:hover::before,
+.product_checkbox > input:hover + label::before {
+    background-color: var(--color-accents-contrast);
+}
+
+.manufacturer_checkbox > input:focus + label::before,
+.product_checkbox > input:focus + label::before {
+    box-shadow: 0 0 0.3em 0.2em var(--color-accents-contrast);
+}
+
+.manufacturer_checkbox > input:checked + label::before,
+.product_checkbox > input:checked + label::before {
+    content: "\002714";
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    background-color: var(--color-accents-contrast);
+}
+
+/* --- product quantity --- */
 
 .product_info > span:last-child {
     background-color: var(--color-accents-hover);
@@ -176,6 +231,8 @@ aside {
 .cart_product_quantity_controls > span:nth-child(2) {
     background-color: var(--color-accents);
 }
+
+/* --- product delete --- */
 
 .cart_product_delete_button {
     padding: 0 0.75rem;
