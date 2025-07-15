@@ -121,6 +121,8 @@ export const generateDeleteWholeCartButton = (cart) => {
             
             const cartIsEmptyInformation = generateCartIsEmptyInformation();
             cartContainer.appendChild(cartIsEmptyInformation);
+
+            recountCartTotalPrice(cart);
         }
         else{
             console.log("[ERROR generateDeleteWholeCartButton] Failed to find cart_container");
