@@ -2,7 +2,8 @@ import {
     loadProductsFromFile,
     generateErrorWhileLoadingProductsInformation,
     generateUnexpectedErrorWhileLoadingProductsInformation,
-    generateNoProductsInformation
+    generateNoProductsInformation,
+    setupSearchBarListeners
  } from "./modules/shopUtils.js";
 import { 
     recountCartTotalPrice, 
@@ -68,6 +69,7 @@ const generateStore = async (filepath) => {
         }
 
         generateProductList(productsData);
+        setupSearchBarListeners(productsData, generateProductList);
     }
     else if(productsData?.length < 1){
         console.error("[INFO] Products list is empty.");
@@ -87,7 +89,7 @@ const generateStore = async (filepath) => {
 
 // --- SHOP ---
 
-const generateProductList = (productsData) => {
+export const generateProductList = (productsData) => {
     const productList = document.getElementById("products_list");
 
     productsData.forEach((product) => {

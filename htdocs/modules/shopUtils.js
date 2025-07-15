@@ -36,3 +36,30 @@ export const generateUnexpectedErrorWhileLoadingProductsInformation = () => {
 
     return informationContainer;
 }
+
+export const setupSearchBarListeners = (productsList, renderProductsFunction) => {
+    let searchTerm = "";
+
+    const searchBar = document.getElementById("search_bar");
+    searchBar.addEventListener('input', (e) => {
+        searchTerm = e.target.value;
+    });
+
+    const searchButton = document.getElementById("search_bar_button");
+    searchButton.addEventListener('click', () => {
+        searchTerm = searchTerm.trim().toLowerCase();
+        const matchingProducts = productsList.filter(product => product.name.trim().toLowerCase().includes(searchTerm) || product.manufacturer.trim().toLowerCase().includes(searchTerm));
+        
+        const productsListContainer = document.getElementById("products_list");
+        if(productsListContainer){
+            productsListContainer.replaceChildren();
+        }
+        
+        if(matchingProducts?.length > 0){
+            renderProductsFunction(matchingProducts);
+        }
+        else{
+            // todo notify -> no products found
+        }
+    });
+}

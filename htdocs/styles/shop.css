@@ -5,16 +5,59 @@ main {
     flex-grow: 1;
 }
 
-.the_shop_title_container {
-    height: 3rem;
-    padding: 1rem;
-
+#shop_top_bar {
     display: flex;
     align-items: center;
-    gap: 0.5em;
+    justify-content: space-between;
+
+    height: 4rem;
+    padding: 0 5% 0 1rem;
 
     background-color: var(--color-accents);
     box-shadow: 0 0.2rem 0.2em rgba(0,0,0, 0.4);
+}
+
+#search_bar_container {
+    height: 60%;
+
+    display: flex;
+    align-items: center;
+}
+
+#search_bar {
+    height: 100%;
+
+    padding: 0 0.75em;
+    
+    border: 0;
+    border-radius: 0.5em 0 0 0.5em;
+
+    background-color: var(--color-background);
+
+    font-size: 1.25em;
+}
+
+#search_bar_button {
+    height: 100%;
+    padding: 0 0.5em;
+
+    border: 0;
+    border-radius: 0 0.75em 0.75em 0;
+
+    background-color: var(--color-accents-contrast);
+    cursor: pointer;
+
+    color: white;
+}
+
+#search_bar_button:hover {
+    background-color: var(--color-accents-contrast-hover);
+}
+
+.the_shop_title_container {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
 
     font-size: 1.5em;
     color: white;
