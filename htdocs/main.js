@@ -10,7 +10,8 @@ import {
     findManufacturerInCart, 
     findProductInCart,
     removeCartIsEmptyInformation,
-    checkIfCartEmpty
+    checkIfCartEmpty,
+    generateDeleteWholeCartButton
 } from "./modules/cartUtils.js";
 import { LoadingIndicator } from "./modules/common.js";
 
@@ -22,7 +23,8 @@ const DEFAULT_MAX_PRODUCT_QUANTITY = 99;
 const DEFAULT_NEW_CART_PRODUCT_CHECKBOX_STATE = false;
 const DEFAULT_NEW_CART_MANUFACTURER_CHECKBOX_STATE = false;
 
-
+let manufacturerIdCounter = 0;
+const cart = [];
 
 // --- WHOLE STORE ---
 
@@ -176,6 +178,17 @@ const generateProductList = (productsData) => {
         productAddToCartButton.className = "products_list_item_add_to_cart_btn";
         productAddToCartButton.innerHTML = "<i class='fa-solid fa-cart-plus fa-2x'></i>";
         productAddToCartButton.addEventListener('click', () => {
+            if(cart.length < 1){
+                const deleteCartButton = generateDeleteWholeCartButton(cart);
+                const cartContainer = document.getElementById("cart_container");
+                if(cartContainer){
+                    cartContainer.appendChild(deleteCartButton);
+                }
+                else{
+                    console.error("[ERROR productAddToCartButton] Failed to find cart_container");
+                }
+            }
+            
             updateCart(product, parseInt(productQuantity.value));
             recountManufacturerTotalPrice(cart, product.manufacturer);
             removeCartIsEmptyInformation();
@@ -196,10 +209,6 @@ const generateProductList = (productsData) => {
 }
 
 // --- CART ---
-
-let manufacturerIdCounter = 0;
-const cart = [];
-
 
 const updateCart = (productData, quantity) => {
     console.log(cart);

@@ -66,6 +66,11 @@ export const checkIfCartEmpty = (cart) => {
         const cartContainer = document.getElementById("cart_container");
 
         if(cartContainer){
+            const deleteCartButton = cartContainer.querySelector("#cart_delete_button_container");
+            if(deleteCartButton){
+                deleteCartButton.remove();
+            }
+
             const cartIsEmptyInformationContainer = generateCartIsEmptyInformation();
 
             cartContainer.appendChild(cartIsEmptyInformationContainer);
@@ -97,4 +102,32 @@ export const removeCartIsEmptyInformation = () => {
     if(cartIsEmptyInformationContainer){
         cartIsEmptyInformationContainer.remove();
     }
+}
+
+export const generateDeleteWholeCartButton = (cart) => {
+    const buttonContainer = document.createElement("div");
+    buttonContainer.id = "cart_delete_button_container";
+
+    const button = document.createElement("button");
+    button.textContent = "Clear cart";
+    button.addEventListener('click', () => {
+        const cartContainer = document.getElementById("cart_container");
+
+        if(cartContainer){
+            const children = Array.from(cartContainer.children);
+            children.forEach(child => child.remove());
+
+            cart.length = 0;
+            
+            const cartIsEmptyInformation = generateCartIsEmptyInformation();
+            cartContainer.appendChild(cartIsEmptyInformation);
+        }
+        else{
+            console.log("[ERROR generateDeleteWholeCartButton] Failed to find cart_container");
+        }
+    });
+
+    buttonContainer.appendChild(button);
+
+    return buttonContainer;
 }
