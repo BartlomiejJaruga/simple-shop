@@ -19,7 +19,8 @@ aside {
 
     background-color: var(--color-accents);
 
-    font-size: 1.5em;
+    font-size: 1.25em;
+    letter-spacing: 2px;
     color: white;
 }
 

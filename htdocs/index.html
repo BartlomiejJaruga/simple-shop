@@ -14,24 +14,24 @@
             <div id="shop_top_bar">
                 <div class="the_shop_title_container">
                     <i class="fa-solid fa-shop fa-lg"></i>
-                    <span>THE SHOP</span>
+                    <h2 id="section_the_shop">THE SHOP</h2>
                 </div>
                 <div id="search_bar_container">
-                    <input type="text" name="searchBar" id="search_bar" />
-                    <button id="search_bar_button">
+                    <input type="text" name="searchBar" id="search_bar" aria-label="Search bar"/>
+                    <button id="search_bar_button" aria-label="Search the shop">
                         <i class="fa-solid fa-magnifying-glass fa-2x"></i>
                     </button>
                 </div>
             </div>
-            <div id="products_list"></div>
+            <section id="products_list" aria-labelledby="section_the_shop"></section>
         </main>
         <aside>
             <div class="cart_title_container">
                 <i class="fa-solid fa-cart-shopping fa-lg"></i>
-                <span>THE CART</span>
+                <h2 id="section_the_cart">THE CART</h2>
             </div>
-            <div id="cart_container"></div>
-            <div id="cart_total_price">
+            <section id="cart_container" aria-labelledby="section_the_cart"></section>
+            <div id="cart_total_price" role="status" aria-live="polite">
                 Grand total: 0.00$
             </div>
         </aside>

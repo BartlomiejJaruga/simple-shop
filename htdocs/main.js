@@ -89,7 +89,7 @@ const generateStore = async (filepath) => {
 
 // --- SHOP ---
 
-export const generateProductList = (productsData) => {
+const generateProductList = (productsData) => {
     const productList = document.getElementById("products_list");
 
     productsData.forEach((product) => {
@@ -100,7 +100,7 @@ export const generateProductList = (productsData) => {
 
         const productImage = document.createElement("img");
         productImage.src = "/assets/item_image_example.png";
-        productImage.alt = "item image";
+        productImage.alt = "product image description";
         productImage.className = "products_list_item_image";
 
         const productNameAndManufacturer = document.createElement("div");
