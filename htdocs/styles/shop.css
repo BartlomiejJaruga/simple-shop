@@ -88,7 +88,8 @@ main {
     }
 }
 
-.products_list_loading_products_error_information {
+.products_list_loading_products_error_information,
+#products_list_searching_products_no_products_information {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -100,7 +101,6 @@ main {
     text-align: center;
     font-size: 2rem;
 }
-
 
 /* ===== SINGLE PRODUCT ITEM ===== */
 
