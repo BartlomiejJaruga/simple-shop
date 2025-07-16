@@ -7,12 +7,12 @@ A simple online store written in **pure JavaScript**. The UI consists of two pan
 ## 📸 Screenshots
 
 ### Website
-<img width="1916" height="906" alt="image" src="https://github.com/user-attachments/assets/4c51608d-c660-443a-91f3-7d35429213e5" />
+<img width="1918" height="1027" alt="image" src="https://github.com/user-attachments/assets/fc48841c-bef6-4fa3-8153-6df6b869f7e7" />
 
 <br><br>
 
 ### Cart with products
-<img width="567" height="692" alt="image" src="https://github.com/user-attachments/assets/99847c47-a87c-4e76-a9d3-698bec93a5ad" />
+<img width="568" height="783" alt="image" src="https://github.com/user-attachments/assets/6c360c6f-3ea8-497d-ab12-f63ab1964910" />
 
 ---
 
@@ -26,8 +26,16 @@ A simple online store written in **pure JavaScript**. The UI consists of two pan
 - Real-time calculation of:
   - Total price per manufacturer
   - Total price of selected items in the cart
+- Full control over cart contents:
+  - Adding products
+  - Changing quantity of products
+  - Changing products state (counted or not)
+  - Deleting products
+  - Clearing whole cart
 - Products loading from .json file
+- Search Bar for searching specific products or manufacturers
 - Scalability and responsiveness of the UI
+- Accessibility support: (a11y) and "tabbing" through page
 
 ---
 
@@ -39,9 +47,11 @@ A simple online store written in **pure JavaScript**. The UI consists of two pan
   - Entire manufacturers
   - Individual products
 - Only **selected items** are used in price calculations
-- Users can delete unwanted products from tje cart
+- Users can delete unwanted products from the cart
 - Users can change quantity of every product in the cart
 - Users can change quantity of a product added to the cart (via input or buttons)
+- Users can clear whole cart
+- Products or manufacturers can be searched with the search bar located at the top of the page
 
 ---
 
@@ -63,6 +73,10 @@ simple-shop/
     |    └── item_image_example.png
     ├── data
     |    └── products.json
+    ├── modules
+    |    ├── cartUtils.js
+    |    ├── common.js
+    |    └── shopUtils.js
     ├── styles
     |    ├── _variables.css
     |    ├── cart.css
